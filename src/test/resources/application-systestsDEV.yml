@@ -1,0 +1,17 @@
+testobject:
+  # in the DEV we reach the UFS Mock through the IP of the docker host it's running on
+  url: "http://gltu1181.mgm1.telematik-test:8200/ufs"
+  existing-iccsn: "80276881048000813492"
+  matching-kvnr: "X110523179"
+
+
+ehca:
+  fqdn: "https://ehca-dev.ltuzd.telematik-test/eHealthCA"
+
+spring:
+  ssl:
+    bundle:
+      jks:
+        ehca:
+          keystore:
+            location: "classpath:ehcaCerts/dev/titusClientCert-DEV.p12"
