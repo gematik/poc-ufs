@@ -1,0 +1,7 @@
+testobject:
+  url: "https://ufs-mock-test.gematik.vsdm.telematik-test/ufs"
+  existing-iccsn: "80276883110000018111"
+  matching-kvnr: "M070759114"
+
+
+

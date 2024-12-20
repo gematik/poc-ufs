@@ -1,0 +1,105 @@
+# These defaults settings are those for the RU. If some values are to be overidden in other environments (DEV or TU)
+# this happens in the specific docker-compose files.
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:ufsmockdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+  ssl:
+    bundle:
+      jks:
+        server:
+          # The keystore contains both ecc cert/private key (alias ecc) and rsa cert/private key (alias rsa)
+          # We intentionally didn't specify the alias to be used so that the server can serve client request based on ecc or rsa.
+          # Note that the default embedded Tomcat-Server does NOT offer this flexibility. We had to switch to Jetty.
+          keystore:
+            location: "classpath:https/ru/ufs-mock-ref.gematik.vsdm.telematik-test.p12"
+            password: "00"
+            type: "PKCS12"
+          # The truststore contains the expected client CA certs, it's only needed if mutualTLS is active (client-auth:need)
+          truststore:
+            location: "classpath:https/truststoreUfsMock.p12"
+            password: "000000"
+            type: "PKCS12"
+
+        ehca:
+          keystore:
+            location: "classpath:ehcaCerts/ru/titusClientCert-RU.p12"
+            password: "00"
+            type: "PKCS12"
+          truststore:
+            location: "classpath:ehcaCerts/ehcaServerCA.p12"
+            password: "000000"
+            type: "PKCS12"
+
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health, info, logfile, metrics, prometheus
+  endpoint:
+    health:
+      enabled: true
+    info:
+      enabled: true
+    logfile:
+      enabled: true
+    metrics:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  server:
+    port: 8201
+    ssl:
+      enabled: false
+
+
+# Only inside Gematik VPN !
+ehca:
+  fqdn: https://ehca-prod.ltuzd.telematik-test/eHealthCA
+
+server:
+  ssl:
+    enabled: true
+    protocol: TLS
+    # No guaranteed support for TLS 1.3
+    enabled-protocols: TLSv1.2
+    bundle: "server"
+    client-auth: want
+    # The following ciphers below are ONLY listed to DOCUMENT which ciphers the server should support according to gemSpec_Krypt.
+    # We made sure that the server effectively can handle each of these ciphers (manual tests with curl).
+    # Modifying the list has no impact on the final suite chosen by the server !
+    # This is because the list is overridden by the embedded server default setting.
+    # If at some point we need to restrict the cipher suite that can be negotiated on the server side, we should customize the underlying embedded server.
+    # This can give inspiration for server customization: https://stackoverflow.com/questions/43940608/how-to-set-https-ssl-cipher-suite-preference-in-spring-boot-embedded-tomcat
+    ciphers: [
+      TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+      TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    ]
+  port: 443
+
+#https://wiki:gematik:de/pages/viewpage.action?pageId=503584106
+checksum-params:
+  version: '1'
+  identifier: 'X'
+  keyVersion: '2'
+  update-reason-identifier: 'U'  #siehe specs VSDM
+  hex-key: "f08cb0883a1150b8ce8ccb0e3336b40fce8f88a3ffcae277063ee1bdd5cc1a80"
+
+logging:
+  level:
+    root: warn
+

@@ -1,0 +1,29 @@
+:doctype: book
+ifndef::env-github[]
+image::doc/Gematik_Logo_Flag_With_Background.png[logo,width=200,height=47,role=right]
+endif::[]
+ifdef::env-github[]
+++++
+<img align="right" width="250" height="47" src="doc/Gematik_Logo_Flag_With_Background.png"/> <br/>
+++++
+endif::[]
+= UFS POC
+
+++++
+
+== About The Project[[about-the-project]]
+This repository provides a demonstration of an UFS server.
+
+The server always replies with "no updates" to any request. The key feature is the Poc of next generation Prüfnachweis. It is not compatibel with the current Prüfnachweis.
+
+== Release Notes[[release-notes]]
+See `link:ReleaseNotes.md[ReleaseNotes]` for all information regarding the (newest) releases.
+
+== Contributing[[contributing]]
+If you want to contribute, please check our `link:CONTRIBUTING.md[CONTRIBUTING.md]`.
+
+== License[[license]]
+This project is licensed under the Apache 2.0 license.
+
+== Contact[[contact]]
+If you have questions or want to get in contact please use the "issues" function on GitHub.
